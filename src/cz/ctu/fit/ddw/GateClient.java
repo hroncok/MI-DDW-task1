@@ -116,30 +116,35 @@ public class GateClient {
                 AnnotationSet as_default = doc.getAnnotations();
 
                 FeatureMap futureMap = null;
-                // get all Token annotations
-                AnnotationSet annSetTokens = as_default.get("Token",futureMap);
-                System.out.println("Number of Tokens annotations: " + annSetTokens.size());
+                // get all Lookup annotations
+                AnnotationSet annSetLookups = as_default.get("Lookup",futureMap);
+                System.out.println("Number of Lookup annotations: " + annSetLookups.size());
 
-                ArrayList tokenAnnotations = new ArrayList(annSetTokens);
+                ArrayList lookupAnnotations = new ArrayList(annSetLookups);
 
-                // looop through the Token annotations
-                for(int j = 0; j < tokenAnnotations.size(); ++j) {
+                // looop through the Lookup annotations
+                for(int j = 0; j < lookupAnnotations.size(); ++j) {
 
-                    // get a token annotation
-                    Annotation token = (Annotation)tokenAnnotations.get(j);
+                    // get a lookup annotation
+                    Annotation lookup = (Annotation)lookupAnnotations.get(j);
 
-                    // get the underlying string for the Token
-                    Node isaStart = token.getStartNode();
-                    Node isaEnd = token.getEndNode();
+                    // get the underlying string for the Lookup
+                    Node isaStart = lookup.getStartNode();
+                    Node isaEnd = lookup.getEndNode();
                     String underlyingString = doc.getContent().getContent(isaStart.getOffset(), isaEnd.getOffset()).toString();
-                    System.out.println("Token: " + underlyingString);
+                    System.out.println("Lookup: " + underlyingString);
                     
-                    // get the features of the token
-                    FeatureMap annFM = token.getFeatures();
+                    // get the features of the lookup
+                    FeatureMap annFM = lookup.getFeatures();
                     
                     // get the value of the "string" feature
-                    String value = (String)annFM.get((Object)"string");
-                    System.out.println("Feature: " + value);
+                    String major = (String)annFM.get((Object)"majorType");
+                    String minor = (String)annFM.get((Object)"minorType");
+                    if (minor != null) {
+                        System.out.println("Type: " + major + " (" + minor + ")");
+                    } else {
+                        System.out.println("Type: " + major);
+                    }
                 }
             }
         } catch (GateException ex) {
