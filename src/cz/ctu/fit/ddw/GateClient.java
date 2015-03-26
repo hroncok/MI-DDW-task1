@@ -13,7 +13,10 @@ import gate.Node;
 import gate.ProcessingResource;
 import gate.creole.SerialAnalyserController;
 import gate.util.GateException;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -89,14 +92,19 @@ public class GateClient {
             //annotationPipeline.add(japeTransducerPR);
             
             Corpus corpus = Factory.newCorpus("");
-            // create a document
+            // create a document from stdin
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String line;
+            String input = "";
             try {
-                File ny = new File("/home/churchyard/ownCloud/Škola/142/MI-DDW/ny.txt");
-                Document document1 = Factory.newDocument(ny.toURL());
-                corpus.add(document1);
-            } catch (MalformedURLException ex) {
+                while((line = br.readLine()) != null) {
+                    input += line;
+                }
+            } catch (IOException ex) {
                 Logger.getLogger(GateClient.class.getName()).log(Level.SEVERE, null, ex);
             }
+            Document document1 = Factory.newDocument(input);
+            corpus.add(document1);
             
             
             // create a corpus and add the document
