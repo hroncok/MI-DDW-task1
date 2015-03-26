@@ -16,6 +16,11 @@
 </form>
 
 {% for plot in plots %}
+{% if plot == 'major' %}
+<h2>Major categories</h2>
+{% else %}
+<h2>Minor categories for {{ plot }}</h2>
+{% endif %}
 <div id="{{ plot }}" style="width:100%;height:500px"></div>
 {% endfor %}
 

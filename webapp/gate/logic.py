@@ -38,20 +38,24 @@ def tokenize(url):
             continue
         key, value = line.strip().split()
         if ':' not in key:
-            major[key] = value
+            major[key] = int(value)
         else:
             primary, secondary = key.split(':')
             if not primary in minor:
                 minor[primary] = {}
-            minor[primary][secondary] = value
+            minor[primary][secondary] = int(value)
     return major, minor
 
 
-def flot_data(data):
+def flot_data(data, total=0):
     '''Return JSON of data how flot expects it'''
     tojson = []
     for key, value in data.items():
         if key == '_total_':
             continue
         tojson.append({'label': key, 'data': value})
+        if total:
+            total -= value
+    if total:
+        tojson.append({'label': '?', 'data': value})
     return json.dumps(tojson)

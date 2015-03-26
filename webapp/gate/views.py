@@ -15,6 +15,8 @@ def index(request):
             url = form.cleaned_data['url']
             major, minor = logic.tokenize(url)
             plots['major'] = mark_safe(logic.flot_data(major))
+            for key in minor.keys():
+                plots[key] = mark_safe(logic.flot_data(minor[key], major[key]))
     else:
         form = forms.URLForm()
     return render(request, 'index.html', {'form': form, 'plots': plots})
