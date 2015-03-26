@@ -1,0 +1,53 @@
+\documentclass{beamer}
+
+\mode<presentation> {
+  \usetheme{Goettingen}
+  \setbeamercovered{transparent}
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+%\usepackage{graphicx}
+\definecolor{thisblue}{RGB}{51 51 179}
+\hypersetup{allcolors=thisblue,colorlinks=true}
+
+\title{MI-DDW Homework 1}
+\author{Miro Hrončok}
+\institute[FIT]{FIT ČVUT v Praze}
+
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%\begin{frame}
+%  \frametitle{Osnova}
+%  \tableofcontents
+%\end{frame}
+
+
+\section{Co jsem udělal}
+
+\begin{frame}
+  \frametitle{Co jsem udělal}
+    Webová aplikace kreslící koláčové grafy obsahu jednotlivých kategorií slov podle ANNIE Gazetteer
+    
+    Poskytuje také jednoduché API vracející data
+\end{frame}
+
+\section{Použité technologie}
+
+\begin{frame}
+  \frametitle{Použité technologie}
+  \begin{itemize}
+    \item GATE a ANNIE Gazetteer jako CLI aplikace v Javě
+    \item Webová aplikace a API v Pythonu (Django)
+    \item Koláčové grafy pomocí JS knihovny flot
+  \end{itemize}
+\end{frame}
+
+
+\end{document}
+
