@@ -1,3 +1,4 @@
+import json
 import html2text
 import requests
 from subprocess import Popen, PIPE, STDOUT
@@ -44,3 +45,13 @@ def tokenize(url):
                 minor[primary] = {}
             minor[primary][secondary] = value
     return major, minor
+
+
+def flot_data(data):
+    '''Return JSON of data how flot expects it'''
+    tojson = []
+    for key, value in data.items():
+        if key == '_total_':
+            continue
+        tojson.append({'label': key, 'data': value})
+    return json.dumps(tojson)
