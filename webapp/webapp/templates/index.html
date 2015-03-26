@@ -15,8 +15,12 @@
     </div>
 </form>
 
-{% if url %}
-<p>{{url}}</p>
+{% if major %}
+<ul>
+{% for key, value in major.items %}
+  <li>{{ key }} &mdash; {{ value }}</li>
+{% endfor %}
+</ul>
 {% endif %}
 
 {% endblock %}
