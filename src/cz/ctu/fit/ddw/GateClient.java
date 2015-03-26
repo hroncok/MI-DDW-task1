@@ -17,6 +17,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -107,6 +109,8 @@ public class GateClient {
             //run the pipeline
             annotationPipeline.execute();
 
+            Map<String, Integer> counts = new HashMap<String, Integer>();
+            
             // loop through the documents in the corpus
             for(int i=0; i< corpus.size(); i++){
 
@@ -118,7 +122,7 @@ public class GateClient {
                 FeatureMap futureMap = null;
                 // get all Lookup annotations
                 AnnotationSet annSetLookups = as_default.get("Lookup",futureMap);
-                System.out.println("Number of Lookup annotations: " + annSetLookups.size());
+                System.out.println("_total_ " + annSetLookups.size());
 
                 ArrayList lookupAnnotations = new ArrayList(annSetLookups);
 
@@ -129,10 +133,10 @@ public class GateClient {
                     Annotation lookup = (Annotation)lookupAnnotations.get(j);
 
                     // get the underlying string for the Lookup
-                    Node isaStart = lookup.getStartNode();
+                    /*Node isaStart = lookup.getStartNode();
                     Node isaEnd = lookup.getEndNode();
                     String underlyingString = doc.getContent().getContent(isaStart.getOffset(), isaEnd.getOffset()).toString();
-                    System.out.println("Lookup: " + underlyingString);
+                    System.out.println("Lookup: " + underlyingString);*/
                     
                     // get the features of the lookup
                     FeatureMap annFM = lookup.getFeatures();
@@ -140,12 +144,23 @@ public class GateClient {
                     // get the value of the "string" feature
                     String major = (String)annFM.get((Object)"majorType");
                     String minor = (String)annFM.get((Object)"minorType");
-                    if (minor != null) {
-                        System.out.println("Type: " + major + " (" + minor + ")");
+                    if (counts.containsKey(major)) {
+                        counts.put(major, counts.get(major)+1);
                     } else {
-                        System.out.println("Type: " + major);
+                        counts.put(major, 1);
+                    }
+                    if (minor != null) {
+                        String majmin = major+":"+minor;
+                        if (counts.containsKey(majmin)) {
+                            counts.put(majmin, counts.get(majmin)+1);
+                        } else {
+                            counts.put(majmin, 1);
+                        }
                     }
                 }
+            }
+            for(String key : counts.keySet()) {
+                System.out.println(key + " " + counts.get(key));
             }
         } catch (GateException ex) {
             Logger.getLogger(GateClient.class.getName()).log(Level.SEVERE, null, ex);
